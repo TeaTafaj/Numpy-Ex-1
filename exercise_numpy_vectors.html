@@ -7760,7 +7760,7 @@ Policy B - Giving households with less than 30'000 dollars a check for 7'000</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [52]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Original Incomes</span>
@@ -7770,7 +7770,7 @@ Policy B - Giving households with less than 30'000 dollars a check for 7'000</p>
 <span class="n">policy_a</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">sub_a</span> <span class="o">=</span> <span class="n">policy_a</span> <span class="o">&lt;</span> <span class="mi">40000</span>
 <span class="n">policy_a</span><span class="p">[</span><span class="n">sub_a</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">5000</span>
-<span class="n">ex5_gini_policy_a</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">policy_a</span><span class="p">)</span>
+<span class="n">ex6_gini_policy_a</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">policy_a</span><span class="p">)</span>
 
 <span class="c1"># Calculate effect of Policy B</span>
 <span class="n">policy_b</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -7784,7 +7784,7 @@ Policy B - Giving households with less than 30'000 dollars a check for 7'000</p>
 <span class="p">)</span>
 
 <span class="c1"># Store results</span>
-<span class="n">results</span><span class="p">[</span><span class="s2">"ex5_gini_policy_a"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ex6_gini_policy_a</span>
+<span class="n">results</span><span class="p">[</span><span class="s2">"ex6_gini_policy_a"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ex6_gini_policy_a</span>
 <span class="n">results</span><span class="p">[</span><span class="s2">"ex6_gini_policy_b"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ex6_gini_policy_b</span>
 <span class="n">results</span><span class="p">[</span><span class="s2">"ex6_gini_which_reduced_more"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ex6_gini_which_reduced_more</span>
 
@@ -8025,7 +8025,7 @@ Amount to be transferred to each household: $4,467.47
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [56]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Original Income</span>
@@ -8037,9 +8037,11 @@ Amount to be transferred to each household: $4,467.47
 <span class="n">policy_e</span><span class="p">[</span><span class="n">sub_e</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy_e</span><span class="p">[</span><span class="n">sub_e</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.95</span>  <span class="c1"># 5% tax on &gt; $250,000</span>
 
 <span class="c1"># Transfer to &lt; $40,000</span>
-<span class="n">transfer</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"ex9_transfers"</span><span class="p">]</span>
+<span class="n">transfer</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"ex8_revenue_raised"</span><span class="p">]</span>
 <span class="n">sub_b</span> <span class="o">=</span> <span class="n">policy_e</span> <span class="o">&lt;</span> <span class="mi">40_000</span>
-<span class="n">policy_e</span><span class="p">[</span><span class="n">sub_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy_e</span><span class="p">[</span><span class="n">sub_b</span><span class="p">]</span> <span class="o">+</span> <span class="n">transfer</span>
+<span class="n">receivers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">sub_b</span><span class="p">)</span>
+<span class="n">transfer_per_house</span> <span class="o">=</span> <span class="n">transfer</span> <span class="o">/</span> <span class="n">receivers</span>
+<span class="n">policy_e</span><span class="p">[</span><span class="n">sub_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">policy_e</span><span class="p">[</span><span class="n">sub_b</span><span class="p">]</span> <span class="o">+</span> <span class="n">transfer_per_house</span>
 
 <span class="c1"># Gini after transfer</span>
 <span class="n">ex11_gini_policy_e</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">policy_e</span><span class="p">)</span>
@@ -8059,7 +8061,7 @@ Amount to be transferred to each household: $4,467.47
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Policy E Gini: 0.4568
+<pre>Policy E Gini: 0.4626
 </pre>
 </div>
 </div>
@@ -8070,7 +8072,7 @@ Amount to be transferred to each household: $4,467.47
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [57]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [62]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Exercise 12 — pick the policy with the lower Gini</span>
@@ -8094,7 +8096,7 @@ Amount to be transferred to each household: $4,467.47
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Recommended policy: Policy E
+<pre>Recommended policy: Policy D
 </pre>
 </div>
 </div>
